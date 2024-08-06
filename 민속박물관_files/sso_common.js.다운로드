@@ -1,0 +1,381 @@
+"use strict";
+
+var sso, ssoOptions;
+
+var SSO_COMMON = {
+	
+	GetSsoInfo: function() {
+		if(sso != null){
+			//이벤트핸들러 제거
+			sso._removeEventHandler();
+			sso = null;
+		}
+		
+		$.ajax({
+			type : 'post',
+			url : '/kor/member/login/setSsoInfo.ajax',
+			dataType : 'json',
+			async : false,
+			success : function(result){
+				var urEvnmtDc = /Mobi|Android/i.test(navigator.userAgent) ? '1' : '0'; //모바일 1 아님 0
+				if(result.isAlive == true){
+					//클라이언트 라이브러리 초기화 
+					ssoOptions = {
+						ccoSiteNo: result.ccoSiteNo,				// 제휴사사이트번호
+						clntAkInf: result.clntAkInf,				// 클라이언트요청정보
+						vrblNm: 'sso',								// 라이브러리 변수명
+						urEvnmtDc: urEvnmtDc,								// 사용자환경구분코드 0: PC Web 1: Mobile Web 2: Mobile App
+						srnOpt: {
+							opMd: '0',								// 오픈모드 0: Redirect 1: iframe 2: Popup
+							srnHeaderExpsYn: 'Y'					// 화면헤더노출여부
+						}
+					};
+					
+					if((result.acesTkn || "").replace(/^\s+|\s+$/g, "") != ""){
+						ssoOptions.acesTkn = result.acesTkn;
+					}
+					
+					sso = new SsoClientLibrary(ssoOptions);
+				}else{
+					alert("서버에서 에러가 발생하였습니다.");
+					location.href = "/";
+				}
+					
+			},
+			error : function(request,status,error){
+				//console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				alert("네트워크에 문제가 발생하였습니다. 잠시 후 다시 시도해주십시오.");
+			}
+		});
+
+	},
+	
+	// 일반 로그인
+	Login: function() {
+		var id = $('#loginid').val() || '';
+		var pw = $('#pw').val() || '';
+		
+		if(id == '')
+		{
+			alert("아이디를 입력해주세요.");
+			$('#loginid').focus();
+			return false;
+		}
+		
+		if(pw == '')
+		{
+			alert("비밀번호를 입력해주세요.");
+			$('#pw').focus();
+			return false;
+		}
+
+		SSO_COMMON.GetSsoInfo();
+		
+		sso.callLogin({
+			akUrl: '/exBiz/login/login_01_001',
+			akDta: {
+				onlId: id,
+				cstPswd: pw
+			},
+			aftPcMd: '1',							 // 후처리모드
+			rturUrl: $('#returnurl').val(),
+			rturUrlCaloMethd: 'GET',
+			callback : function(rspDta) {
+				SSO_COMMON.IdSave();
+				
+				if ('00' == rspDta.rspC){
+					SSO_COMMON.AfterLogin(rspDta);
+	            }else{
+	            	SSO_COMMON.AfterLoginFail(rspDta);
+				}
+			}
+		});
+	},
+	
+	// SSO 로그인
+	SsoLogin: function(ssoTkn) {
+		history.replaceState({},null,location.pathname);
+		
+		SSO_COMMON.GetSsoInfo();
+		sso.callSsoLogin({
+			akUrl: '/exBiz/login/ssoLogin_01_001',
+	        akDta: {
+				ssoTkn: ssoTkn                 
+	        },
+	        aftPcMd: '1',                            		// 후처리모드
+	        rturUrl: $('#returnurl').val(),   				// 리턴URL
+	        rturUrlCaloMethd: 'GET',                 		// 리턴URL호출메소드
+	        callback : function(rspDta) {
+	        	if ('00' == rspDta.rspC) {
+	        		SSO_COMMON.AfterLogin(rspDta);
+				}
+	        }
+	   });
+	},
+	
+	// 로그인 성공 시
+	AfterLogin: function(rspDta){
+		//로그인 후처리를 위해 토큰 전달
+		$('#acesTkn').val(rspDta.acesTkn);
+		$('#ssoTkn').val(rspDta.ssoTkn);
+		
+		var params =  $('#login_frm').serialize();
+		
+		$.ajax({
+			type : 'post',
+			url : '/kor/member/login/setTresMemberLogin.ajax',
+			data: params,
+			dataType : 'json',
+			async : false,
+			success : function(result)
+			{
+				var returnurl = result.returnurl;
+				if(returnurl == ""){
+					returnurl = "/";
+				}
+				
+				/** 정상 로그인일 경우 */
+				if(rspDta.rspDtc == '000'){
+					location.href = returnurl;
+				} 
+	            /** 비밀번호 변경 대상자일 경우 */
+				else if(rspDta.rspDtc == '401'){
+					SSO_COMMON.GetSsoInfo();
+					//비밀번호 변경 캠페인 화면 호출
+					sso.callScreen({
+						 akUrl: '/view/login/login_04_001',		// 요청URL
+						 rturUrl: returnurl, 					// 제휴사리턴URL
+						 rturUrlCaloMethd: 'GET'				// 제휴사 리턴URL호출메소드
+					});
+				}
+			}
+		});
+	},
+	
+	// 로그인 실패 시
+	AfterLoginFail: function(rspDta){
+		alert(rspDta.rspMsgCn);
+		
+		var rspCodeArray = [
+			{rspC: "44", rspDtc: "103", callUrl: ""},									//rspMsgCn: 해당 제휴사 회원가입이 불가능합니다.(재가입 불가)
+			{rspC: "44", rspDtc: "401", callUrl: ""},									//rspMsgCn: 아이디, 비밀번호가 일치하지 않습니다.
+			{rspC: "44", rspDtc: "403", callUrl: ""},									//rspMsgCn: 접근 제한 대상 IP입니다.
+			{rspC: "44", rspDtc: "404", callUrl: "/exView/login/login_03_001"},			//rspMsgCn: 부정로그인 대상입니다.
+			{rspC: "44", rspDtc: "405", callUrl: "/exView/manage/fdPassword_01_001"},	//rspMsgCn: 비밀번호 오류횟수가 5회 초과하였습니다.
+			{rspC: "44", rspDtc: "406", callUrl: "/exView/login/login_05_001"},			//rspMsgCn: L.POINT & 제휴사 휴면 회원입니다.
+			{rspC: "44", rspDtc: "407", callUrl: "/exView/login/login_05_001"},			//rspMsgCn: L.POINT 휴면 회원입니다.
+			{rspC: "44", rspDtc: "408", callUrl: "/exView/login/login_05_001"},			//rspMsgCn: 제휴사 휴면 회원입니다.
+			{rspC: "44", rspDtc: "410", callUrl: "/exView/manage/chPassword_03_001"},	//rspMsgCn: 임시 비밀번호 발급 상태 회원입니다.
+			{rspC: "44", rspDtc: "412", callUrl: "/exView/login/login_02_001"},			//rspMsgCn: 강제 차단 상태 회원입니다.
+			//{rspC: "44", rspDtc: "414", callUrl: "/exView/join/mbrJoin_16_001"},			//rspMsgCn: 정회원 전환 가능 대상입니다.
+			{rspC: "44", rspDtc: "415", callUrl: "/exView/login/login_02_001"},			//rspMsgCn: 서비스 이용이 불가능한 회원 유형입니다.
+			{rspC: "44", rspDtc: "419", callUrl: "/exView/join/mbrJoin_04_001"},		//rspMsgCn: 제휴사 약관 미동의 회원입니다.
+			{rspC: "44", rspDtc: "420", callUrl: "/exView/join/mbrJoin_03_001"}			//rspMsgCn: 제휴사 약관 미동의 회원입니다.(14세미만)
+			//{rspC: "44", rspDtc: "423", callUrl: "/exView/login/socialReg_01_001"},		//rspMsgCn: 소셜로그인 맵핑 정보가 존재하지 않습니다.
+			//{rspC: "44", rspDtc: "430", callUrl: ""},										//rspMsgCn: 중복된 회원정보가 존재합니다.
+			//{rspC: "44", rspDtc: "705", callUrl: "/exView/login/esyReg_01_001"}			//rspMsgCn: 등록된 사용자가 아닙니다.
+		];
+		
+		var rspCode = $.grep(rspCodeArray, function(n, i){
+			return (n.rspC == rspDta.rspC && n.rspDtc == rspDta.rspDtc);
+		});
+		
+		if(rspCode != null && rspCode.length > 0){			
+			var obj = rspCode[0];
+
+			if(obj.callUrl != ""){
+				var options = {
+					akUrl: obj.callUrl,						// 요청URL
+					rturUrl: window.location.href,          // 제휴사리턴URL
+					rturUrlCaloMethd: "GET"                 // 제휴사리턴URL호출메소드
+				};
+				
+				//통합회원제 화면 호출 시 요청데이터 필요한 응답코드
+				var code = "404,406,407,408,410,412,415,419,420,";
+				if(code.indexOf(obj.rspDtc + ",") >= 0){
+					switch(obj.rspDtc) {
+						case "404":
+							options.akDta = {ssoTkn: rspDta.ssoTkn, onlCstTpC: rspDta.onlCstTpC};
+							break;
+						case "406":
+						case "407":
+						case "408":
+							options.akDta = {ssoTkn: rspDta.ssoTkn, onlCstTpC: rspDta.onlCstTpC, rspDtc: obj.rspDtc};
+							break;
+						case "412":
+						case "415":
+							options.akDta = {rspC: obj.rspC, rspDtc: obj.rspDtc};
+							break;
+						case "419":
+						case "420":
+							options.akDta = {ssoTkn: rspDta.ssoTkn, onlCstTpC: rspDta.onlCstTpC, frnYn: rspDta.frnYn};
+							break;
+						default:
+							options.akDta = {ssoTkn: rspDta.ssoTkn};
+							break;
+					}
+				}
+				
+				SSO_COMMON.GetSsoInfo();
+				sso.callScreen(options);
+			}else{
+				if(obj.rspDtc == '401'){
+					//아이디, 비밀번호 재입력 요청
+					//$('#loginid').val('');
+					$('#pw').val('');
+				}
+			}
+		}
+	},
+	
+	// 로그아웃
+	Logout: function() {
+		SSO_COMMON.GetSsoInfo();
+		sso.callLogout({
+			callback: function(rspDta){
+				//토큰 삭제
+				$.ajax({
+					type : 'post',
+					url : '/kor/member/logout/removeTkn.ajax',
+					dataType : 'json',
+					async : false,
+					success : function(result){
+						location.href = $('#returnurl').val();
+					},
+					error : function(e){
+						alert("네트워크에 문제가 발생하였습니다. 잠시 후 다시 시도해주십시오.");
+					}
+				});
+			}
+		});
+	},
+	
+	// 아이디 저장
+	IdSave: function() {
+		if($("#idsave").is(':checked')){
+			 if($('#loginid').val() != ""){
+			  // userid 쿠키에 id 값을 7일간 저장
+				var today = new Date();
+				today.setDate( today.getDate() + 30 );
+				document.cookie = "lotteworldid=" + escape( $('#loginid').val() ) + "; path=/; expires=" + today.toGMTString() + ";"
+			 }else{
+			  // userid 쿠키 삭제
+				var today = new Date();
+				today.setDate( today.getDate() - 1 );
+				document.cookie = "lotteworldid=" + escape( $('#loginid').val() ) + "; path=/; expires=" + today.toGMTString() + ";"
+			 }
+		}else{
+			// userid 쿠키 삭제
+			var today = new Date();
+			today.setDate( today.getDate() - 1 );
+			document.cookie = "lotteworldid=" + escape("") + "; path=/; expires=" + today.toGMTString() + ";"
+		}
+		//$("#password").val(hex_md5($("#pw").val()));				
+		return true;
+	},
+	
+	// 아이디 찾기
+	RequestId: function() {
+		SSO_COMMON.GetSsoInfo();
+		sso.callScreen({
+			  akUrl: '/exView/manage/fdId_01_001',			// 요청URL
+			  rturUrl: window.location.href,				// 리턴URL
+			  rturUrlCaloMethd: 'GET'						// 리턴URL호출메소드
+			});
+	},
+	
+	// 비밀번호 찾기
+	RequestPasswd: function() {
+		SSO_COMMON.GetSsoInfo();
+		sso.callScreen({
+			  akUrl: '/exView/manage/fdPassword_01_001',	// 요청URL
+			  rturUrl: window.location.href,				// 리턴URL
+			  rturUrlCaloMethd: 'GET'						// 리턴URL호출메소드
+			});
+	},
+	
+	// 회원가입
+	MemberJoin: function() {
+		SSO_COMMON.GetSsoInfo();
+		sso.callScreen({
+			  akUrl: '/exView/join/mbrJoin_01_001',			// 요청URL
+			  rturUrl: window.location.href,				// 리턴URL
+			  rturUrlCaloMethd: 'GET'						// 리턴URL호출메소드
+			});
+	},
+	
+	// 회원정보수정
+	EditUserInfo: function() {
+		SSO_COMMON.GetSsoInfo();
+		sso.callScreen({
+			  akUrl: '/view/manage/mbrManage_01_000',		// 요청URL
+			  rturUrl: window.location.href,				// 리턴URL
+			  rturUrlCaloMethd: 'GET'						// 리턴URL호출메소드
+			});
+	},
+
+	// 회원탈퇴
+	WithDraw: function() {
+		if (confirm("회원탈퇴하시겠습니까?")) {
+			SSO_COMMON.GetSsoInfo();
+			sso.callScreen({
+				  akUrl: '/view/manage/mbrSes_01_001',			// 요청URL
+				  rturUrl: window.location.href,				// 리턴URL
+				  rturUrlCaloMethd: 'GET'						// 리턴URL호출메소드
+				});
+		}else{
+			return false;
+		}
+	},
+	
+	// 패밀리 사이트 이동
+	GoFamilySite: function(url) {
+		var siteUrl = url.replace(/\/$/, '');
+		
+		SSO_COMMON.GetSsoInfo();
+		if((ssoOptions.acesTkn || "").replace(/^\s+|\s+$/g, "") != ""){
+			// SSO토큰 조회
+			sso.getSsoTkn({
+				callback: function(r_ssoTkn){
+					if((r_ssoTkn || "") != ""){
+						siteUrl = siteUrl + "?ssoTkn=" + r_ssoTkn;  
+					}
+					window.open(siteUrl);
+				}
+			});
+		} else{
+			window.open(siteUrl);
+		}
+	},
+	
+	// 예매 사이트 이동
+	GoMticket: function(url, mode) {
+		var mTicketUrl = url;
+		
+		SSO_COMMON.GetSsoInfo();
+		if((ssoOptions.acesTkn || "").replace(/^\s+|\s+$/g, "") != ""){
+			// SSO토큰 조회
+			sso.getSsoTkn({
+				callback: function(r_ssoTkn){
+					if((r_ssoTkn || "") != ""){
+						if( mTicketUrl.indexOf("?") >= 0 ){
+							mTicketUrl += "&ssoTkn=" + r_ssoTkn;
+						}else{
+							mTicketUrl += "?ssoTkn=" + r_ssoTkn;
+						}
+					}
+					window.open(mTicketUrl, "_blank");
+				}
+			});
+		} else{
+			window.open(mTicketUrl, "_blank");
+		}
+		
+		if(mode == 'pop'){
+			$(".blackBg").stop().fadeOut(300);
+			$(".layerPop").stop().fadeOut(300);
+			$('body').removeClass("lypopOpen");
+		}
+	}
+	
+}

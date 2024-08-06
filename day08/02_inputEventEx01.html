@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Document</title>
+    <style>
+        table{
+            /* background-color: aqua; */
+            border: 1px solid black;
+            text-align: center;
+        }
+        table>tr>td{
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 
+        성적확인
+        이름 : input
+        국어 : input
+        영어 : input
+        수학 : input
+        성적계산 버튼
+        ------------
+        ul => li
+        이름 : ㅇㅇㅇ
+        국어 : 100
+        영어 : 76
+        수학 : 65
+        합계 :
+        평균 :
+    -->
+    <fieldset>
+        <legend>
+            국영수 합계평균
+        </legend>
+        이름: <input type="text" id="name"><br>
+        국어: <input type="text" id="kor"><br>
+        영어: <input type="text" id="eng"><br>
+        수학: <input type="text" id="math"><br>
+        <!-- <button type="button" onclick="clickEventInput()">전송</button> -->
+        <button type="button" id="btn">전송</button>
+        <!-- <button type="button" onclick="makeList()">리스트로 전송</button> -->
+    </fieldset>
+    <ul id="ul">
+        <li id="name"></li>
+        <li id="kor"></li>
+        <li id="eng"></li>
+        <li id="math"></li>
+        <li id="sum"></li>
+        <li id="avg"></li>
+    </ul>
+    <table>
+        <tr>
+            <td colspan="4">합계 및 평균</td>
+        </tr>
+        <tr id="tb1"></tr>
+    </table>
+    <table>
+        <tr>
+            <td>합계 및 평균</td>
+        </tr>
+        <tr id="tb2_1">          
+        </tr>
+        <tr id="tb2_2"></tr>
+    </table>
+    <!-- <script>
+        const name = document.getElementById('name');
+        const kor = document.getElementById('kor');
+        const eng = document.getElementById('eng');
+        const math = document.getElementById('math');
+        const ul = document.getElementById('ul');
+
+
+        function clickEventInput(){
+            console.log(name.value);
+            console.log(kor.value);
+            console.log(eng.value);
+            console.log(math.value);
+
+            let sum = parseInt(kor.value,10) + parseInt(eng.value,10) + parseInt(math.value,10);
+            let avg = sum/3;
+
+            let str = `<li>이름 : ${name.value}</li>`;
+            str += `<li>국어 : ${kor.value}</li>`;
+            str += `<li>영어 : ${eng.value}</li>`;
+            str += `<li>수학 : ${math.value}</li>`;
+            str += `<li>합계 : ${sum}</li>`;
+            str += `<li>평균 : ${avg}</li>`;
+
+            ul.innerHTML = str;
+        }
+    </script> -->
+    <script>
+        const myObject = {
+            name:'',
+            kor:'',
+            eng:'',
+            math:''
+        };
+
+        document.getElementById('btn').addEventListener('click',()=>{
+            let name = document.getElementById('name').value;
+            let kor = document.getElementById('kor').value;
+            let eng = document.getElementById('eng').value;
+            let math = document.getElementById('math').value;
+            
+            myObject.name=name;
+            myObject.kor=kor;
+            myObject.eng=eng;
+            myObject.math=math;
+
+            console.log(myObject);
+
+            let sum = Number(kor)+Number(eng)+Number(math);
+            // Math.round() => 정수로 반올림.(소수점 안남김)
+            // .toFixed(2) => 소수자리수 표현(반올림하여 소수점자르기)
+            let avg = (sum/3).toFixed(2);
+
+            
+
+            let ul = document.getElementById('ul');
+            let str = `<li>이름 : ${name.value}</li>`;
+            str += `<li>국어 : ${kor}</li>`;
+            str += `<li>영어 : ${eng}</li>`;
+            str += `<li>수학 : ${math}</li>`;
+            str += `<li>합계 : ${sum}</li>`;
+            str += `<li>평균 : ${avg}</li>`;
+
+            ul.innerHTML = str;
+
+            // table 태그의 테이블로 표시
+            let tb1 = document.getElementById('tb1');
+            let set1 = `<td colspan="2">합계 : ${sum}</td>`;
+            set1 += `<td colspan="2">평균 : ${avg}</td>`;
+
+            tb1.innerHTML = set1;
+
+            let tb2_1 = document.getElementById('tb2_1');
+            let set2_1 = `<tr><th>합계</th><td>${sum}</td></tr>`;
+            
+            let tb2_2 = document.getElementById('tb2_2');
+            let set2_2 = `<tr><th>평균</th><td>${avg}</td></tr>`;
+
+            tb2_1.innerHTML = set2_1;
+            tb2_2.innerHTML = set2_2;
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    가격: <input type="text" id="cost">원<br>
+    할인율: <input type="text" id="dis">%<br>
+    <button type="button" id="btn">전송</button>
+    <h3 id="result"></h3>
+    <script>
+        document.getElementById('btn').addEventListener('click',()=> {
+            let cost = document.getElementById('cost').value;
+            let dis = document.getElementById('dis').value;
+            
+            let pers = Number(dis)/100;
+            let dis_cost = Number(cost) * pers;
+            let fin_cost = Number(cost) * (1-pers);
+
+            console.log(cost);
+            console.log(dis);
+            console.log(pers);
+            console.log(dis_cost);
+            console.log(fin_cost);
+            
+            let str = `<li>가격 : ${cost}</li>`;
+            str += `<li>할인율 : ${dis}%</li>`;
+            str += `<li>할인금액 : ${dis_cost}</li>`;
+            str += `<li>지불금액 : ${fin_cost}</li>`;
+
+            result.innerHTML = str;
+        })
+     
+    </script>
+</body>
+</html>

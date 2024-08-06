@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="reset.css"> -->
+    <style>
+        @import url(reset.css);
+        /* 태그들이 가지고 있는 고유속성 없애주는 코드 : reset.css */
+        .container{
+            width: 100%;
+            height: 50vh;
+            background : linear-gradient(rgba(0,0,0,0.491), rgba(0,0,0,0.221)), url(../img/basket_dunk.jpg);
+            background-size: cover;
+        }
+        .container>.navbar{
+            width: 90%;
+            height: 50px;
+            /* background-color: blueviolet; */
+            margin: 0 auto;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .container>.navbar>h1>a{
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .container>.navbar>h1>a:hover{
+            color: rgb(77, 77, 161);
+        }
+        .container>.navbar>ul{
+            display: flex;
+            justify-content: space-between;
+        }
+        .container>.navbar>ul>li{
+            margin: 0 20px;
+        }
+        .container>.navbar>ul>li>a{
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .container>.navbar>ul>li>a:hover{
+            color: rgb(77, 77, 161);
+        }
+        .container>.main{
+            position: absolute;
+            top: 150%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* background-color: rgb(28, 150, 99); */
+            text-align: center;
+            /* color: white; */
+            margin-top: 150px;
+
+        }
+        .container>.main>.list{
+            display: flex;
+            height: 200px;
+            margin: 70px;
+        }
+        .container>.main>h2{
+            font-size: 50px;
+            font-weight: 700;
+            margin-bottom: 50px;
+        }
+        .container>.main>ul{
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        .container>.main>ul>li{
+            display: inline;
+            margin: 50px;
+        }
+        .container>.main>ul>li>img{
+            margin: 30px;
+        }
+        .container>.main>ul>li>h1{
+            font-size: 25px;
+            font-weight: 500;
+            margin: 20px;
+        }
+        .container>.main>ul>li>h3{
+            font-size: 20px;
+            margin: 20px;
+            /* font-weight: 500; */
+        }
+        .container>.main>ul>li>h3>del{
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: gray;
+        }
+        .container>.main.link>a{
+            margin: 20px;
+        }
+        /* .container>.main button{
+            border: 2px solid rgb(126, 126, 228);
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            background-color: rgb(77, 77, 151);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .container>.main button:hover{
+            background-color: rgb(33, 37, 102);
+            color: rgb(113, 113, 151);
+        } */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1><a href="">BasDunk</a></h1>
+            <ul>
+                <li><a href="">Content</a></li>
+                <li><a href="">Shop</a></li>
+                <li><a href="">Cart</a></li>
+                <li><a href="">Login</a></li>
+            </ul>
+        </div>
+        <div class="main">
+            <h2>상품 리스트</h2>
+            <!-- <a href=""><button>Learn More</button></a> -->
+            <ul>
+                <li>
+                    <img src="../img/stuff1.jpg" alt="stuff1">
+                    <h1>NSB 에어리스 농구공 AIRLESS BASKETBALL</h1>
+                    <h3><del>550,000</del></h3>
+                    <h3>450,000</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff2.jpg" alt="stuff2">
+                    <h1>몰텐 B7D3500-Y-2-KBA (IO로고있음) 농구공</h1>
+                    <h3><del>58,000</del></h3>
+                    <h3>55,000</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff3.jpg" alt="stuff3">
+                    <h1>몰텐 B7D3500-Y-2 농구공</h1>
+                    <h3><del>58,000</del></h3>
+                    <h3>55,000</h3>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="../img/stuff4.jpg" alt="stuff4">
+                    <h1>뉴발란스 농구화 GS OMN1S LOW (GBOMNLBR)</h1>
+                    <h3><del>119,500</del></h3>
+                    <h3>59,500</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff5.jpg" alt="stuff5">
+                    <h1>위탁 아디다스 농구화 Real Deal 'Damien Lillard'</h1>
+                    <h3>229,000</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff6.jpg" alt="stuff6">
+                    <h1>나이키 미니 슈박스 크로스바디 백 (3L) FN3059-010</h1>
+                    <h3><del>69,000</del></h3>
+                    <h3>49,000</h3>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="../img/stuff7.jpg" alt="stuff7">
+                    <h1>나이키 - 에브리데이 양말 크루 삭스</h1>
+                    <h3><del>29,000</del></h3>
+                    <h3>13,000</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff8.jpg" alt="stuff8">
+                    <h1>컴프레스포트 러닝 하이컷 양말 PRO RACING SOCKS V4.0 RUN HIGH</h1>
+                    <h3><del>39,000</del></h3>
+                    <h3>29,000</h3>
+                </li>
+                <li>
+                    <img src="../img/stuff9.jpg" alt="stuff9">
+                    <h1>나이키 - 스포츠 스우시 헤드밴드 헤어밴드 블랙 (AC2285-010)</h1>
+                    <h3><del>16,000</del></h3>
+                    <h3>15,000</h3>
+                </li>
+            </ul>
+            <div class="link">
+                <a href=""><img src="../img/icon1.png" alt="instagram"></a>
+                <a href=""><img src="../img/icon2.png" alt="youtube"></a>
+                <a href=""><img src="../img/icon3.png" alt="basketball"></a>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

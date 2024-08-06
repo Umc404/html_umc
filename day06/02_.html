@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            /* border: 1ca solid black; */
+            height: 100px;
+            /* flex-direction: column; 쓸일이 별로 없음*/
+            justify-content: space-between; /*가로*/
+            align-items: center; /*세로*/
+            padding: 0;
+            margin-left: 100px;
+            margin-right: 100px;
+        }
+        .item{
+            /* width: 150px; */
+            /* border: 1px solid black; */
+            text-align: center;
+            line-height: 50px;
+        }
+        .item>a{
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .item>ul{
+            list-style: none;
+            padding: 0;
+        }
+        .item>ul>li{
+            display: inline;
+            margin: 10px;
+        }
+        .item>ul>li>a{
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .cen{
+            text-align: center;
+            align-items: center;
+            height: 400px;
+            line-height: 400px;
+            margin: 30px auto 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            <a href="">DESIGN</a>
+        </div>
+        <div class="item">    
+            <ul>
+                <li><a href=>HOME</a></li>
+                <li><a href=>LOGIN</a></li>
+                <li><a href=>SIGNUP</a></li>
+                <li><a href=>BOARD</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="cen">
+        <h1>welcome to front-end world<br>
+            <a href="">test</a>
+        </h1>
+        
+    </div>
+</body>
+</html>

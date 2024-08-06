@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 화면 버튼 하나 생성 버튼 클릭하면 내이름이 h1으로 표시되도록 -->
+     <button onclick="nameFunc2()">click1</button>
+     <button id="btn">click2</button>
+    <h1 id="printResult"></h1>
+     <script>
+        const printResult = document.getElementById('printResult');
+        console.log(printResult);
+
+        function nameFunc2(){
+            printResult.innerHTML=`<span class="c">Umc</span>`;
+        }
+        const btn = document.getElementById('btn');
+        document.getElementById('btn').addEventListener('click', ()=> {
+            //addEventListener 씌우는 방법
+            // 여러개의 이벤트를 등록할 수 있음.(자주 사용함)
+            alert('Umc');
+        })
+     </script>
+</body>
+</html>

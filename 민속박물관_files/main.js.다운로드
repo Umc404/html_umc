@@ -1,0 +1,122 @@
+var mainSwiper;
+$(document).ready(function(){
+
+	$(window).resize(function(){
+		//반응형
+		if(jQuery(window).width() > 1015){ //웹
+			isWeb = true;
+			isTabl = false;
+			isMobile = false;
+
+
+		}else if(741 < jQuery(window).width() && jQuery(window).width() <= 983){ //태블릿
+			isWeb = false;
+			isTabl = true;
+			isMobile = false;
+
+			
+
+		}else if(741 >= jQuery(window).width()){ //모바일
+			isWeb = false;
+			isTabl = false;
+			isMobile = true;
+
+			
+		}
+	});$(window).resize();
+
+	TweenMax.to($(".mainTodayArea"), 1, {top:0, opacity:1, delay:0.5, ease:Power3.easeOut});
+
+	
+	// 메인 비주얼 롤링
+	 mainSwiper = new Swiper('.swiper-container.mainVisArea', {
+		slidesPerView: 1,
+		speed: 800,
+		loop: true,
+		autoplay:{
+			delay:5000,
+		},
+		autoHeight:false,
+		pagination: {
+			el: '.swiper-container.mainVisArea .swiper-pagination',
+			clickable: true,
+		},
+		navigation: {
+		nextEl: '.swiper-container.mainVisArea .swiper-button-next',
+		prevEl: '.swiper-container.mainVisArea .swiper-button-prev',
+		},
+		on: {
+			init: function () {
+				console.log("swiper initialization");
+			},
+			slideChangeTransitionStart: function(){
+				
+			},
+			slideChangeTransitionEnd: function(){
+				//TweenMax.to($(".mainVisArea .swiper-wrapper .swiper-slide").not(".swiper-slide-active").find(".txtBox"), 0, {top:180, opacity:0, ease:Power3.easeOut});
+				//TweenMax.to($(".mainVisArea .swiper-wrapper .swiper-slide.swiper-slide-active .txtBox"), 1.5, {top:80, opacity:1, ease:Power3.easeOut});
+			},
+			imagesReady: function(){
+				//TweenMax.fromTo($(".mainVisArea .swiper-wrapper .swiper-slide.swiper-slide-active .txtBox"), 1.5, { top:180, opacity:0 }, { top:80, opacity:1, ease:Power3.easeOut});
+			}
+		}
+	});
+	$(".mainVisArea .swiper-pagination").append("<a href='javascript:' class='playBtn'></a>");
+	$(".mainVisArea .playBtn").click(function(){
+		if(!$(this).hasClass("on")){
+			$(this).addClass("on");
+			mainSwiper.autoplay.stop();
+		}else {
+			$(this).removeClass("on");
+			mainSwiper.autoplay.start();
+		}
+	});
+	
+	//메인 상단 롤링 배너 팝업
+	if( $(".mainPopBan").size() > 0)
+	{
+		$(".mainPopBan .xbt a").click(function(){
+			$(".mainPopBan").stop().slideUp(300);
+		});
+		var mainPopBanSwiper = new Swiper('.swiper-container.mainPopBan', {
+			slidesPerView: 1,
+			speed: 500,
+			loop: false,
+			navigation: {
+				nextEl: '.swiper-container.mainPopBan .swiper-button-next',
+				prevEl: '.swiper-container.mainPopBan .swiper-button-prev',
+			},
+	    });
+	}
+
+	//mainCon1 배경움직임
+	$(".mainCon1List li").each(function(i){
+		$(this).hover(function(){
+			$(".mainCon1Bg div").stop().fadeOut(500);
+			$(".mainCon1Bg div").eq(i).stop().fadeIn(500);
+		},function(){
+			$(".mainCon1Bg div").stop().fadeOut(500);
+		});
+	});
+
+	// 메인 스크롤 모션
+	var mainScrollTop = $(window).scrollTop() + $(window).height()/2;
+	$(window).scroll(function(){
+		mainScrollTop = $(window).scrollTop() + $(window).height()/2;
+		if(mainScrollTop >= $(".mainCon1").offset().top && mainScrollTop <= $(".mainCon2").offset().top){
+			TweenMax.to($(".mainCon1 .mainTit"), 1, {top:0, opacity:1, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon1 .mainTxt"), 1, {top:0, opacity:1, delay:0.2, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon1 .boxArea"), 1, {top:0, opacity:1, delay:0.4, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon1 .mainCon1List"), 1, {top:0, opacity:1, delay:0.4, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon1 .btnArea"), 1, {top:0, opacity:1, delay:0.6, ease:Power3.easeOut});
+		}else if(mainScrollTop >= $(".mainCon2").offset().top && mainScrollTop <= $(".mainCon3").offset().top){
+			TweenMax.to($(".mainCon2 .mainTit"), 1, {top:0, opacity:1, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon2 .mainTxt"), 1, {top:0, opacity:1, delay:0.2, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon2 .mainCon2List"), 1, {top:0, opacity:1, delay:0.4, ease:Power3.easeOut});
+		}else if(mainScrollTop >= $(".mainCon3").offset().top && mainScrollTop <= $("#footer").offset().top){
+			TweenMax.to($(".mainCon3 .mainTit"), 1, {top:0, opacity:1, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon3 .mainTxt"), 1, {top:0, opacity:1, delay:0.2, ease:Power3.easeOut});
+			TweenMax.to($(".mainCon3 .mainNews"), 1, {top:0, opacity:1, delay:0.4, ease:Power3.easeOut});
+		}
+	});
+})
