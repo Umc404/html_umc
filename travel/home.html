@@ -8,11 +8,40 @@
  <body>
     <h1>Travel</h1>
     <ul>
-        <li><a href="home.html">Home</a></li>
-        <li><a href="seoul.html">Seoul</a></li>
-        <li><a href="tokyo.html">Tokyo</a></li>
-        <li><a href="paris.html">Paris</a></li>
+        <li id="list1">Home</li>
+        <li id="list2">Seoul</li>
+        <li id="list3">Tokyo</li>
+        <li id="list4">Paris</li>
     </ul>
-    <img src="../img/airport.jpg" alt="home_image">
+    <img src="../img/airport.jpg" alt="" id="image">
+
+    <script>
+        const image = document.getElementById('image');
+        // console.log(image);
+        // console.log(image.src);
+
+        document.getElementById('list1').addEventListener('click', ()=> {
+            const img = document.getElementById('image');
+            // const con = document.getElementById('list1').innerText;
+            img.src = "../img/airport.jpg"
+        })
+        document.getElementById('list2').addEventListener('click', ()=> {
+            const img = document.getElementById('image');
+            // const con = document.getElementById('list2').innerText;
+            img.src = "../img/seoul.jpg"
+        })
+        document.getElementById('list3').addEventListener('click', ()=> {
+            const img = document.getElementById('image');
+            const con = document.getElementById('list3').innerText;
+            img.src = "../img/tokyo.jpg"
+        })
+        document.getElementById('list4').addEventListener('click', ()=> {
+            const img = document.getElementById('image');
+            const con = document.getElementById('list4').innerText;
+            img.src = "../img/paris.jpg"
+        })
+        
+
+    </script>
  </body>
 </html>

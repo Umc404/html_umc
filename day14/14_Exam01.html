@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <h2>여행 준비물 점검 목록</h2>
+        <form action="">
+            <input type="text" id="item" autofocus="true">
+            <button type="button" id="add">추가</button>
+        </form>
+        <div>
+            <ul id="itemList"></ul>
+        </div>
+    </div>
+    <script>
+        let listArr = [];
+        let listStr = '';
+        let listCnt = 0;
+        // 클릭 시 input 입력한 내용 받아서 array에 저장 그 후 출력
+        // 출력할 때 마지막 버튼태그 생성. 이 버튼은 pop() 실행하도록
+        document.getElementById('add').addEventListener('click', ()=>{
+            let list = document.getElementById('item').value;
+            listArr.push(list);
+            // console.log(list);
+            // console.log(listArr);
+
+            if(listCnt < listArr.length) {
+                listStr += `<li><div id="${listCnt}">${listArr[listCnt]}<button type="button" onclick="clickDel(${listCnt})">X</button></div></li>`;
+                document.getElementById('itemList').innerHTML = listStr;
+                listCnt++;
+                document.getElementById('item').value = '';               
+                
+            }
+            
+        })
+        function clickDel(e){
+            console.log(listArr);
+            listArr.pop(e);
+            console.log(listArr);
+           
+            for(listCnt of listArr.length){
+                listStr += `<li><div id="${listCnt}">${listArr[listCnt]}<button type="button" onclick="clickDel(${listCnt})">X</button></div></li>`;
+            }
+            document.getElementById('itemList').innerHTML = listStr;
+            // if(listCnt < listArr.length) {
+            //     listStr += `<li><div id="${listCnt}">${listArr[listCnt]}<button type="button" onclick="clickDel(${listCnt})">X</button></div></li>`;
+            //     listCnt++;
+            //     document.getElementById('item').value = '';               
+            // } // 이거 모두리스트업
+        }
+        
+    </script>
+</body>
+</html>
