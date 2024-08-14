@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        set을 이용한 로또 생성
+    -->
+    <h1>
+        1~45 까지 중복되지 않게 숫자 6개 랜덤으로 추출 => 출력
+        set 객체 이용하여 생성
+    </h1>
+    <button id="randNum">랜덤번호 6자리 생성(출력)</button>
+    <h3 id="myNum"></h3>
+    <button id="corNum">당첨번호 7자리 생성(출력)</button>
+    <h3 id="winNum"></h3>
+    <button id="corCnt">결과 확인</button>
+    <h3 id="winCnt"></h3>
+    <script>
+        const randList = new Set(); // 랜덤번호
+        const corList = new Set();  // 당첨번호
+        
+        // console.log(randList)
+        // console.log(corList)
+        
+        document.getElementById('randNum').addEventListener('click', ()=>{
+            randList.clear();
+            let str1 ='';
+            
+            // for(let a=0; a<6; a++) {
+                // let randNum = Number(Math.floor(Math.random()*45+1));
+
+                //     randList.add(randNum);
+                //     str1 += `${randNum} `;
+                // }
+                
+            while(randList.size<6){
+                let randNum = Number(Math.floor(Math.random()*45+1));
+                randList.add(randNum);
+            }
+            console.log(randList)
+            
+            // myNum.innerText=str1;
+            
+            const randArr = Array.from(randList);
+            console.log(randArr);            
+            // ### 할거 : for문 찍어서 h3 mynum 에 출력
+        })
+        // randnum 됨. cornum 아직 안됨
+        
+        document.getElementById('corNum').addEventListener('click', ()=>{
+            corList.clear();
+            let corNum = Number(Math.floor(Math.random()*45+1));
+            let str2 = '';
+            
+            // for(let a=0; a<6; a++) {
+            //     let corNum = Number(Math.floor(Math.random()*45));
+            //     corList.add(corNum);
+            //     str2 += `${corNum} `;
+            // }
+            while(corList.size<6){
+                let corNum = Number(Math.floor(Math.random()*45+1));
+                corList.add(corNum);
+            }
+
+            corList.add(corNum);
+            str2 += `[${corNum}]`;
+            console.log(corList)
+            
+            winNum.innerText = str2;
+            const corArr = Array.from(corList);
+            console.log(corArr)
+        })
+        
+        </script>
+</body>
+</html>

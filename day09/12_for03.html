@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            text-align: center;
+            border-collapse: collapse;
+
+        }
+        table tr, td{
+            border: 1px solid black;
+            padding : 7px;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn">구구단 출력</button>
+    <div id="gugu">
+        <!-- 
+            table 추가
+            2*1=2   3*1=3   4*1=4 ... 9*1=9
+            2*2=4   3*2=6   4*2=8 ... 9*2=18
+            ...
+            incre = 1 => tr 생성
+            for dan 2~9 반복 td 생성
+        -->
+        <table id="result">
+
+        </table>
+    </div>
+    <script>
+        // for
+        // document.getElementById('btn').addEventListener('click',()=> {
+        //     let dan = 2;
+        //     let inc = 1;
+        //     let str = ``;
+
+        //     for(inc=1; inc<=9; inc++){
+        //         str += `<tr>`;
+        //         for(dan=2; dan<=9; dan++){
+        //             //console.log(`${dan} / ${inc}`);
+        //             str += `<td>${dan} * ${inc} = ${dan*inc}</td>`;
+        //         }
+        //         str += `</tr>`;
+        //     }
+        //     result.innerHTML = str;    
+        // })
+        // 위엔 내가 한거 아랜 해설
+        // while
+        function gugu(){
+            const gugu = document.getElementById('gugu');
+            let inc = 1; // 1~9
+            let str = `<table>`;
+                while(inc<=9){
+                    let dan = 2;
+                    str += `<tr>`;
+                        while(dan <=9) {
+                            str += `<td>${dan}*${inc}=${dan*inc}</td>`;
+                            dan++;
+                        }
+                        inc++;
+                    str += `</tr>`;
+                    inc++
+                }
+
+                str += `</table>`;
+            gugu.innerHTML = str;
+        }
+        // 아래 두 document 같은 뜻
+        // document.getElementById('btn').addEventListener('click',()=> {
+        //     gugu();
+        // })
+        document.getElementById('btn').addEventListener('click', gugu);
+    </script>
+</body>
+</html>

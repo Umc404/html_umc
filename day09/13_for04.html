@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>향상된 for문</h1>
+    <ul>
+        <li>
+            for of : 배열 안에서 값을 탐색할 때 사용[]
+            for(let value of Array){
+                code ..;
+            }
+        </li>
+        <li>
+            for in : 객체 안의 내용을 탐색할 때 { }
+            for(let value in Object){
+                <!-- key:value 파이썬 딕셔너리? -->
+                code ..;
+            }
+        </li>
+    </ul>
+    <h3>약수 출력하기</h3>
+    <input type="text" id="num">
+    <button id="btn">약수 출력</button>
+    <h3 id="result">
+        약수 출력 / 개수<br>
+    </h3>
+    <script>
+        // 약수는 1부터 나 자신의 수(num) 나눈 나머지가 0인 수
+        // 6%1, 6%2, 6%3 ... 6%6 == 0
+        // 1~6까지 반복
+        
+        document.getElementById('btn').addEventListener('click',()=> {
+            let a = Number(document.getElementById('num').value);
+            let cnt = 0;
+            let str ='';
+
+            for(let x=1; x<=a; x++){
+                if(a%x==0) {
+                    console.log(x);
+                    cnt += 1;
+                    str += `${x} `;
+                }
+            }
+            
+            str += `약수의 총 개수는 ${cnt}개`;
+            console.log(cnt);
+
+            result.innerHTML = str;
+        })
+        // let b = document.getElementById('result').innerHTML;
+        // console.log("x값")
+        // console.log(b);
+    </script>
+</body>
+</html>

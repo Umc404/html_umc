@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        JSON(JavaScript Object Notation) : 자바스크립트의 객체 표기법
+    </h1>
+    <ul>
+        <li>
+            데이터 요청 및 응답처리에 필요한 데이터의 표준 형식을 제공하는 타입.
+        </li>
+        <li>
+            백엔드(서버) 언어 종류에 상관없이 데이터를 송수신 단말형식으로 통일
+        </li>
+        <li>
+            백엔드(서버) 에서는 무조건 String 처리 - 화면(javaScript)은 Object로 처리
+        </li>
+        <li>
+            화면에서 서버로 데이터를 보낼 때 >
+            Object > String > JSON.stringify(jsObject)
+        </li>
+        <li>
+            서버에서 화면으로 데이터를 받을 때 > 
+            String > Object => JSON.parse(StringData)
+        </li>
+        <li></li>
+    </ul>
+    <script>
+    // '{name:value, name2:value2}' = Object > String 변환
+    // {name:value, name2:value2} => String > Object 변환
+
+    const cake={
+        id: '1234',
+        type: 'donut',
+        name: 'cake',
+        image:{
+            url:'img/001.jpg',
+            width:'200',
+            height:'20'
+        },
+        thumbnail:{
+            url:'img/th/001.jpg',
+            width:'20',
+            height:'5'
+        }
+    };
+    console.log(cake);
+    // cake를 string 으로 변환
+    let cakeString = JSON.stringify(cake);
+    console.log(cakeString);
+    // {"id":"1234","type":"donut","name":"cake",
+    // "image":{"url":"img/001.jpg","width":"200","height":"20"},
+    // "thumbnail":{"url":"img/th/001.jpg","width":"20","height":"5"}}
+    
+    // 서버에서 온 string => object로 변경
+    let stringData = '{"id":"1234","type":"donut","name":"cake","image":{"url":"img/001.jpg","width":"200","height":"20"},"thumbnail":{"url":"img/th/001.jpg","width":"20","height":"5"}}';
+    let parseData = JSON.parse(stringData);
+    console.log(parseData)
+    
+    // 콘솔에 key:value 형식으로 출력
+    // for in 사용하여 추출
+    // object[keyname] = value 추출
+    const cakeArr = [];
+    cakeArr.push(cake);
+
+    cakeArr.forEach(function(e){
+        for(let keyName in e){
+            if (keyName == 'image' || keyName == 'thumbnail'){
+                console.log(`--${keyName}--`);
+                for(let key in e[keyName]){
+                    console.log(e[keyName][key])
+                }
+            }
+            else{
+                console.log(keyName+" : "+e[keyName])
+            }
+        }
+    })
+    console.log("위에 내가한거 아래는 해설")
+    for(let keyName in parseData){
+        if(keyName == 'image' || keyName == 'thumbnail') {
+            let innerObject = parseData[keyName];
+            for(let key in innerObject) {
+                console.log(innerObject[key])
+            }
+        }else{
+            console.log(keyName, ":",parseData[keyName]);
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <h1>내가 좋아하는 가수</h1>
+        이름 : <input type="text" id="name"><br>
+        나이 : <input type="text" id="age"><br>
+        주소 : <input type="text" id="address"><br>
+        playList : <br>
+        <input type="text" id="first"><br>
+        <input type="text" id="second"><br>
+        <input type="text" id="third"><br>
+        <button type="button" id="add">등록</button>
+    </form>
+    <script>
+        const people = [];
+        
+        const musician1 = {
+        name: '자우림',
+        age: '27',
+        address: '서울',
+        music:{
+            first: '스물다섯 스물하나',
+            second: '샤이닝',
+            third: '영원히 영원히'            
+            }
+        }
+    people.push(musician1);
+    //console.log(people);
+    // 객체 3개 등록
+    document.getElementById('add').addEventListener('click',()=> {
+        const musician2 = {
+            name: document.getElementById('name').value,
+            age: document.getElementById('age').value,
+            address: document.getElementById('address').value,
+            music:{
+                first: document.getElementById('first').value,
+                second : document.getElementById('second').value,
+                third : document.getElementById('third').value
+            }
+
+        }
+        people.push(musician2)
+
+        people.forEach(function(e){
+            console.log("--가수--");
+            for(let keyName in e){
+                if (keyName == 'music'){
+                    console.log("-List-");
+                    for(let key in e[keyName]){
+                        console.log(e[keyName][key])
+                    }
+                }
+                else{
+                    console.log(keyName+":"+e[keyName]);
+                }
+            }
+        })
+        console.log(people)
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        set을 이용한 로또 생성
+    -->
+    <h1>
+        1~45 까지 중복되지 않게 숫자 6개 랜덤으로 추출 => 출력
+        set 객체 이용하여 생성
+    </h1>
+    <button id="randNum">랜덤번호 6자리 생성(출력)</button>
+    <h3 id="myNum"></h3>
+    <button id="corNum">당첨번호 7자리 생성(출력)</button>
+    <h3 id="winNum"></h3>
+    <button id="corCnt">결과 확인</button>
+    <h3 id="winCnt"></h3>
+    <script>
+        const randList = new Set(); // 랜덤번호
+        const corList = new Set();  // 당첨번호
+        
+        // console.log(randList)
+        // console.log(corList)
+        
+        document.getElementById('randNum').addEventListener('click', ()=>{
+            randList.clear();
+            let str1 ='';
+            
+            while(randList.size<6){
+                let randNum = Number(Math.floor(Math.random()*45+1));
+                randList.add(randNum);
+            }
+            console.log(randList) // set에 잘 들어갔는지 확인
+            
+            // set -> array 변환
+            const randArr = Array.from(randList); 
+            
+            // 배열 for문으로 str1 출력데이터 처리
+            for(let a of randArr) {     
+                str1 += `${a} `;
+            }
+            // Array 출력
+            console.log(randArr);
+            myNum.innerText = str1;            
+        })
+        
+        document.getElementById('corNum').addEventListener('click', ()=>{
+            corList.clear();
+            let corNum = Number(Math.floor(Math.random()*45+1));
+            let str2 = '';
+            
+            while(corList.size<7){
+                let corNum = Number(Math.floor(Math.random()*45+1));
+                corList.add(corNum);
+            }
+            
+            // set -> array 변환
+            const corArr = Array.from(corList);
+            console.log(corList)
+            
+            // array for문으로 str2 출력데이터 처리
+            for(let a=0; a<corArr.length-1; a++) {     
+                str2 += `${corArr[a]} `;
+            }
+            //console.log(corArr[corArr.length-1])
+            str2 += `[${corArr[corArr.length-1]}]`            
+            // Array 출력
+            console.log(corArr);
+            
+            winNum.innerText = str2;
+        })
+        document.getElementById('corCnt').addEventListener('click', ()=> {
+            const randArr = Array.from(randList); 
+            const corArr = Array.from(corList);
+            let str3 = '';
+
+            // bonusNo = 마지막 보너스번호 따로저장
+            //let bonusNo = corArr[corArr.length-1]
+            // 저장 후 마지막 제거
+            //corArr.pop();
+            
+            let bonusNo = corArr.pop(); 
+
+            console.log(bonusNo)
+            console.log(corArr)
+
+            // randArr, corArr 필터링
+            let correct = corArr.filter(x => randArr.includes(x));
+            console.log(correct);
+
+            let bonusCor = randArr.includes(bonusNo);
+            console.log(bonusCor)
+
+
+            switch(correct.length) {
+                case 0: case 1: case 2:
+                    str3 += '당첨되지 않았습니다. 다음기회에.';
+                    break;
+                case 3:
+                    str3 += '5등입니다.';
+                     break;
+                case 4:
+                    str3 += '4등입니다.';
+                    break;
+                case 5:
+                   if(bonusCor == true) {
+                    str3 += '2등입니다.';
+                    break;
+                   }
+                   else {
+                    str3 += '3등입니다.';
+                    break;
+                   }
+                case 6:
+                    str3 += '1등입니다.';
+                    break;
+            }
+
+            winCnt.innerText = str3;
+        })
+        
+        </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <fieldset>
+            <legend>
+                국영수 합계평균
+            </legend>
+            이름: <input type="text" id="name"><br>
+            국어: <input type="text" id="kor"><br>
+            영어: <input type="text" id="eng"><br>
+            수학: <input type="text" id="math"><br>
+            <button type="button" id="btn">성적계산</button>
+        </fieldset>
+    </form>
+    <h3 id="result"></h3>
+    <script>
+        // 이름, 국어, 영어, 수학 입력받고 합계, 평균, 합격여부 출력
+        // 합격여부는 60이상이면 pass/fail
+
+        // 입력값의 범위가 0~100 점수 아니면 alert
+        document.getElementById('btn').addEventListener('click',()=> {
+            let name = document.getElementById('name').value;
+            let kor = Number(document.getElementById('kor').value);
+            let eng = Number(document.getElementById('eng').value);
+            let math = Number(document.getElementById('math').value);
+            
+            let sum = kor+eng+math;
+            let avg = sum/3;
+            
+            if (kor > 100 || eng > 100 || math > 100) {
+                alert("100 초과의 수를 입력했습니다. 수를 다시 입력하세요");
+            }
+            else if(kor < 0 || eng < 0 || math < 0) {
+                alert("0 미만의 수를 입력했습니다. 수를 다시 입력하세요");
+            }
+            else {
+                console.log(name);
+                console.log(kor);
+                console.log(eng);
+                console.log(math);
+                console.log(sum);
+                console.log(avg);
+                
+                let str = `<p>이름 : ${name}</p>`;
+                str += `<p>국어 : ${kor}</p>`;
+                str += `<p>영어 : ${eng}</p>`;
+                str += `<p>수학 : ${math}</p>`;
+                str += `<p>합계 : ${sum}</p>`;
+                str += `<p>평균 : ${Math.round(avg)}</p>`;
+                if(avg >=60) {
+                    str += `<p>합격입니다.</p>`;
+                }
+                else {
+                    str += `<p>불합격입니다.</p>`;
+                }
+
+                result.innerHTML = str;
+            }
+        
+        })
+    </script>
+</body>
+</html>

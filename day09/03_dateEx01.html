@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 이름 주민등록번호
+    1,2 == 19+string(0,3)
+    3,4 == 20+string(0,3)
+    ==> 이름, 생년월일, 나이, 성별
+    -->
+     이름 : <input type="text" id="name"><br>
+     주민번호 : <input type="text" id="regino"><br>
+     <button type="button" id="btn">확인</button>
+     <h3 id="result"></h3>
+     <script>
+        document.getElementById('btn').addEventListener('click',()=> {
+            // 이름
+            let name = document.getElementById('name').value;
+            
+            // 생년월일
+            let regino = document.getElementById('regino').value;
+            let birthdt = regino.substring(0,6)
+            
+            // 성별
+            let gennum = regino.charAt(regino.indexOf('-')+1) // 1,3 : 남, 2,4 : 여
+            let gender = (gennum%2 == 1)? '남':'여' // 성별
+            console.log(name);
+            
+            // 나이
+            let today = new Date();
+            let thisyear = Number(today.getFullYear());
+            let cent = (gender == 1 || 2)? '19':'20'
+            let byear = Number(cent + regino.substring(0,2))
+            let age = thisyear - byear // 나이
+            
+            // console.log(birthdt);
+            // console.log(regino.substring(0,2))
+            // console.log((gender == 1 || 2)? '19':'20')
+            console.log(byear)
+            console.log(age)
+            console.log(gender)
+
+            let str = `이름 : ${name}, 생년월일 : ${birthdt}, 나이 : ${age}, 성별 :${gender}`;
+
+            result.innerText = str;
+            
+
+        })
+
+
+
+
+     </script>
+</body>
+</html>

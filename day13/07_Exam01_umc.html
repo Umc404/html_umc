@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        header{
+            text-align: center;
+        }
+        section {
+            display: flex;
+            justify-content: center;
+        }
+        section>div {
+            padding: 20px;
+            /* width: 150px; */
+        }
+    </style>
+</head>
+<body>
+    <!-- https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json -->
+     <header id="header">
+     </header>
+     <section id="section">
+     </section> <!-- display: flex; -->
+
+     <script>
+         let dataResult = {};
+         let str1 = ''; // header h1
+         let str2 = ''; // section
+         
+
+         fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
+         .then(resp => resp.json())
+         .then(result=> {
+             dataResult = result;
+             // console.log(result)
+             // console.log(dataResult)
+             printData(result);
+            }) // 성공했을 때
+            .catch(err => console.log(err))     // 실패했을 때
+            
+            // header
+        // header.innerText = dataResult[squadName];
+        function printData(dataResult){
+            console.log(dataResult)
+            console.log(dataResult.active)
+            // header
+            str1 += `<h1>${dataResult.squadName}</h1>`
+            str1 += `<h3>HomeTown:${dataResult.homeTown} // Formed: ${dataResult.formed}</h3>`
+            
+            header.innerHTML = str1;
+
+            // section
+            console.log(dataResult.members)
+            let memberList = dataResult.members;
+            for(let a in memberList){
+                
+                console.log(memberList[a]);
+                console.log(memberList[a].name);                                     // section 1
+                console.log(`SecretIdentity : ${memberList[a].secretIdentity}`);     // section 2
+                console.log(`Age : ${memberList[a].age}`);                           // section 3
+
+                str2 += `<div id="memList"><h1>${memberList[a].name}</h1>`;          // section 1
+                str2 += `<p>SecretIdentity : ${memberList[a].secretIdentity}</p>`;   // section 2
+                str2 += `<p>Age : ${memberList[a].age}</p>`;                         // section 3
+                str2 += `Superpowers:`;
+                str2 += `<ul>`;
+                
+                let memPowers = memberList[a].powers;
+                for(let b in memPowers){
+                    str2 += `<li>${memPowers[b]}</li>`;
+                    console.log(memPowers[b]);
+                }
+                str2 += `</ul></div>`
+            }
+            section.innerHTML = str2;
+        }    
+           
+    </script>
+</body>
+</html>

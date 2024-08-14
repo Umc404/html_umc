@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json -->
+     <header id="header">
+        <h1></h1>
+        <h3></h3>
+     </header>
+     <section id="section"></section> <!-- display: flex; -->
+
+     <script>
+         let dataResult = {};
+         let str = ''; // header h1
+         let str1 = ''; // header h1
+         let str2 = ''; // header h3
+         let str3 = ''; // section data(name, age)
+         
+
+         fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
+         .then(resp => resp.json())
+         .then(result=> {
+             dataResult = result;
+             // console.log(result)
+             // console.log(dataResult)
+             printData(result);
+            }) // 성공했을 때
+            .catch(err => console.log(err))     // 실패했을 때
+            
+            // header
+        // header.innerText = dataResult[squadName];
+        function printData(dataResult){
+            console.log(dataResult)
+            console.log(dataResult.active)
+            // console.log(dataResult[])
+            // for(let keyName in dataResult){
+            //     console.log(keyName);
+            //     console.log(dataResult[keyName]);
+                // if(keyName == 'squadName'){
+                //     str1 += innerHTML = `<h1></h1>`;
+
+                // }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                // if(keyName == 'members'){
+                //     let memberList = dataResult[keyName];
+                //     console.log(memberList) // 이 데이터가 멤버데이터
+                //     for(let key in memberList){
+                //         let member = memberList[key];
+                //         console.log(member)
+                //         for(let data in member){
+                //             console.log(member[data])
+                //             if(data == 'powers'){
+                //                 for(let powList in member[data]) {
+                //                     // console.log(powList)
+                //                 }
+
+                //             }
+                //         }
+                //     }
+                // }else{
+                //     str += `<li>${keyName} : ${dataResult[keyName]}</li>`;
+                // }
+                
+                
+            // }
+
+            section.innerHTML = str;
+        }
+        </script>
+</body>
+</html>

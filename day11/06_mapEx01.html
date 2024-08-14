@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        input 2개 생성 => 과목 점수 입력
+        map에 추가
+        출력 => map 출력 ul li 형태로 출력
+        결과 => 합계 평균, 합격여부(60점 이상 합격) -> h3 출력
+        점수 100점 초과로 들어가면 밴
+    -->
+    과목 : <input type="text" id="subject"><br>
+    점수 : <input type="number" id="score"><br>
+        <button type="button" onclick="add()">추가</button>
+        <button type="button" id="printBtn">출력</button>
+        <button type="button" id="totBtn">결과</button>
+        <h3 id="result"></h3>
+        <h3 id="tot"></h3>
+    <script>
+        const myMap = new Map();
+        const tot = document.getElementById('tot');
+        const result = document.getElementById('result')
+        const subject = document.getElementById('subject');
+        const score = document.getElementById('score');
+        let sum = 0;
+
+        function add() {
+            tot.innerText = "";
+            
+            let subjectVal = subject.value;
+            let scoreVal = Number(score.value);
+
+            document.getElementById('printBtn').addEventListener('click',print);
+            document.getElementById('totBtn').addEventListener('click',()=> {
+                let avg = sum / myMap.size;
+                let pass = (avg>=60)? 'pass':'fail'
+                tot.innerText = `합계 : ${sum}, 평균 : ${avg}, 합격여부 : ${pass}`;
+            });
+
+            function print(){
+                let str='';
+                myMap.forEach((v, k) =>{
+                    str += `<li>${k} : ${v}</li>`
+                });
+                result.innerHTML = str;    
+            }
+            if(scoreVal < 0 || scoreVal > 100){
+                tot.innerText = '0~100 사이의 값만 입력하세요.';
+                subject.value="";
+                score.value="";
+                subject.focus();
+                return;
+            }
+            else {
+                myMap.set(subjectVal, scoreVal);
+                sum += scoreVal;
+                subject.value=""; // 남아있는 내용 지워주기
+                score.value="";   // 남아있는 내용 지워주기
+                subject.focus();  // 커서 위치시키기  
+                console.log(myMap);
+                console.log(sum);
+                // print(); // 하나씩 들어갈때마다 출력
+            }
+        }
+        // document.getElementById('add').addEventListener('click',()=>{
+        //     let cls = document.getElementById('cls').value;
+        //     let grade = Number(document.getElementById('grade').value);
+            
+        //     if (grade < 0 || grade > 100){
+        //         str += '숫자 잘못 입력하셨습니다';
+        //     }
+        //     else {
+        //         record.set(cls, grade);
+        //         str += `<li>${cls} : ${grade}</li>`
+        //     }
+            
+        //     res1.innerHTML = str;
+            
+        //     console.log(record);
+        // })
+        
+        // document.getElementById('output').addEventListener('click',()=>{
+        //     for (let a of record) {
+        //         str += a
+        //         console.log(a)
+        //     }
+        //     res2.innerHTML = str;
+        // })
+
+        // document.getElementById('result').addEventListener('click',()=>{
+        //     // 합계 평균 합격여부
+
+        // }) 대실패
+    </script>
+</body>
+</html>

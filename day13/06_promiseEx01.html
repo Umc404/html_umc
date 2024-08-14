@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">데이터 가져오기</button>
+    <ul id="ul"></ul>
+    <script>
+        // http://jsonplaceholder.typicode.com/todos/1 ~ 5 5개 데이터 출력
+        let str ='';
+
+        document.getElementById('btn').addEventListener('click', ()=>{
+            str = '';
+            for(let i=1; i<6; i++) {
+                fetch(`http://jsonplaceholder.typicode.com/todos/${i}`)
+                .then(resp => resp.json())
+                .then(result=> {
+                    console.log(result);
+                    printData(result);
+                }) // 성공했을 때
+                .catch(err => console.log(err))     // 실패했을 때
+            }
+        })
+        
+
+        function printData(result){
+            // str ='';
+            const ul = document.getElementById('ul');
+            for(let key in result){
+                str += `<li>${key} : ${result[key]}</li>`;
+            }
+            str += `<hr>`
+            ul.innerHTML = str;
+        }
+    </script>
+</body>
+</html>

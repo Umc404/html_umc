@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        버튼 2개 하나는 플러스 하나는 마이너스
+        플러스 누르면 1씩 증가
+        마이너스 누르면 1씩 감소 (값이 0이 되면 감소 안함)
+    -->
+    <h3 id="number">0</h3>
+    <h3 id="stop"></h3>
+    <button id="plus">+</button>
+    <button id="minus">-</button>
+    <script>
+         let num = Number(document.getElementById('number').innerText);
+        
+         document.getElementById('plus').addEventListener('click', ()=> {
+             num += 1;
+             console.log(num);
+             
+             number.innerText = num;
+         })
+
+         document.getElementById('minus').addEventListener('click', ()=> {
+             if(num < 1) {
+                 num = 0;
+                 console.log(num);
+             }
+             else {
+                 num -= 1;
+                 console.log(num);
+             }
+             number.innerText = num;
+         })
+        // const number = document.getElementById('num');
+        // const incre = document.getElementById('plus');
+        // const decre = document.getElementById('minus');
+
+        // incre.addEventListener('click', ()=> {
+        //     let num = Number(number.innerText);
+        //     number.innerText = num+1;
+        // })
+        // decre.addEventListener('click', ()=> {
+        //     let num = Number(number.innerText);
+        //     if(num <= 0) {
+        //         number.innerText = 0;
+        //         return;
+        //     }
+        //     number.innerText = 0;
+        // })
+    </script>
+</body>
+</html>

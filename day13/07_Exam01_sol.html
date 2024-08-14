@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        #header {
+            margin-bottom: 50px;
+        }
+        #header>h1 {
+            font-size: 2em;
+        }
+        #section {
+            display: flex;
+            justify-content: center;
+        }
+        #section .hero{
+            margin: 0 30px;
+            text-align: left;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        #section .hero div:first-child{
+            font-size: 20px;
+        }
+        </style>
+</head>
+<body>
+    <!-- https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json -->
+     <header id="header">
+        <h1></h1>
+        <h3></h3>
+     </header>
+     <section id="section"></section> <!-- display: flex; -->
+
+     <script>
+         
+
+        fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json')
+        .then(resp => resp.json())
+        .then(result=> printData(result)) // 성공했을 때
+        .catch(err => console.log(err))     // 실패했을 때
+
+        const header = document.getElementById('header');
+        const section = document.getElementById('section');
+
+        function printData(obj){
+            console.log(obj);
+            // header
+            let str = '';
+            str += `<h1>${obj.squadName}</h1>`;
+            str += `<h3>HomeTown:${obj.homeTown} // Formed: ${obj.formed}</h3>`;
+            header.innerHTML = str;
+
+            // section
+            // member[{},{},{}] => 배열 => 객체
+            for(let i=0; i<obj.members.length; i++){
+                let member = obj.members[i];
+                let memberStr = `<div id="hero${i}" class="hero">`;
+                    memberStr += `<div>${member.name}</div>`;
+                    memberStr += `<div> SecretIdentity : ${member.secretIdentity}</div>`;
+                    memberStr += `<div> Age : ${member.age}</div>`;
+                    memberStr += `<div>Age : ${member.age}</div>`;
+                    memberStr += `<div>SuperPowers : <ul id="power${i}"></ul>></div>`;
+                    memberStr += `</div>`;
+                    memberStr = `</div>`;
+
+                    section.innerHTML += memberStr;
+                    for(const p of member.powers){
+                        document.getElementById(`power${i}`).innerHTML +=
+                        `<li>${p}</li>`;
+                    }
+            }
+        }
+        </script>
+</body>
+</html>

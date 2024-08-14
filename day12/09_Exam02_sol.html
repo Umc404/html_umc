@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="09_style.css">
+</head>
+<body>
+    <div class="calculator">
+        <form action="froms">
+            <input type="text" id="output">
+            <button type="button" class="clear" value="C">C</button>
+            <button type="button" class="operator" value="/">/</button>
+            <button type="button" value="1">1</button>
+            <button type="button" value="2">2</button>
+            <button type="button" value="3">3</button>
+            <button type="button" class="operator" value="*">*</button>
+            <button type="button" value="4">4</button>
+            <button type="button" value="5">5</button>
+            <button type="button" value="6">6</button>
+            <button type="button" class="operator" value="+">+</button>
+            <button type="button" value="7">7</button>
+            <button type="button" value="8">8</button>
+            <button type="button" value="9">9</button>
+            <button type="button" class="operator" value="-">-</button>
+            <button type="button" class="dot" value=".">.</button>
+            <button type="button" value="0">0</button>
+            <button type="button" class="result" value="=">=</button>
+        </form>
+    </div>
+    <script>
+        const output = document.getElementById('output');
+        let outputValue = '';
+
+        function operation(f, o, l){
+            let result = 0;
+            switch(o) {
+                case "+": result = f + l; break;
+                case "-": result = f - l; break;
+                case "*": result = f * l; break;
+                case "/": result = f / l; break;
+            }
+            return result.toFixed(2);
+        }
+        
+        function extractValue(strValue) {
+            // String 13.5 + 12.3 = 연산자와 피연산자로 나누기
+            console.log(strValue);
+            let firstNum = strValue.substring(0, strValue.indexOf(" "));
+            let operator = strValue.substr(strValue.indexOf(" ")+1, 1); // 시작번지부터 1개
+            let lastNum = strValue.substring(strValue.lastIndexOf(" ")+1); // 마지막 공백부터 끝까지
+            console.log(firstNum);
+            console.log(operator);
+            console.log(lastNum);
+            // 계산값 호출
+            return operation(parseFloat(firstNum), operator, parseFloat(lastNum));
+        }
+
+
+        document.querySelector('.calculator').addEventListener('click',(e)=> {
+            // console.log(e.target); // 관련 태그 다 긁어옴.
+            // console.log(e.target.value);
+            // eval 함수 : 사용하면 안됨
+            let btnVal = e.target.value;
+            output.value += btnVal;
+            if(!isNaN(btnVal)) {// 버튼의 값이 숫자이면
+                outputValue += btnVal;
+            }else{
+                // 숫자가 아닐 때: + - * / . = C undifined
+                if(btnVal != undefined) {
+                    switch(btnVal) {
+                        case ".":
+                            // 숫자에 붙어서 소수점 역할.
+                            output.value += btnVal;
+                            break;
+                        case "C":
+                            // output 창을 지우기
+                            outputValue = '';
+                            output.value = '';   
+                            break;
+                        default:
+                            // 사칙연산 = - * /
+                            let sub = ''; // 결과를 받을 변수
+                            if(btnVal == "="){
+                                // 연산의 결과 호출 (function 작업)
+                                sub = extractValue(outputValue); // 결과값 리턴
+                                outputValue = sub;
+                            }else{
+                                outputValue += ` ${btnVal} `; 
+                                //string 13.5 + 12.3
+                                // 이후 function 작업으로 피연산자와 연산자로 분리시킴
+                            }
+                            break;
+                    }
+                }
+            }
+            output.value = outputValue;
+        });
+
+    </script>
+</body>
+</html>

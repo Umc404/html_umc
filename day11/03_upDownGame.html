@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        <button id="random">랜덤숫자 생성버튼(1~99)</button>
+        <button id="new">다시 시도</button>
+    </h1>
+    <h3 id="printMsg"></h3>
+    <h1>
+        <input type="number" min="1" max="99" id="myNum">
+        <button id="compareNum">정답</button>
+    </h1>
+    <h3 id="result"></h3>
+    <script>
+        // document.getElementById('random').addEventListener('click',()=>{
+        //     let ran = Math.round(Math.random()*100);
+        //     console.log(ran);          
+            
+        //     let str = '랜덤수(1~99)를 생성했습니다.';
+        //     printMsg.innerText = str;
+            
+        //     document.getElementById('compareNum').addEventListener('click', ()=> {
+        //         let myNum = Number(document.getElementById('myNum').value);
+        //         let i = 1;
+
+        //         console.log(`시도횟수 ${i}`)
+        //         if(ran > myNum){
+        //             console.log('틀렸습니다. UP')
+        //             i += 1;              
+        //         }
+        //         else if (ran < myNum){
+        //             console.log('틀렸습니다. DOWN');
+        //             i += 1;
+        //         }
+        //         else {
+        //             console.log(`정답입니다. ${ran}이었습니다`);
+        //         }
+    
+        //     })
+        // })
+        // 위에 내가한거
+        let comNum = 0;
+        let count = 0;
+
+        document.getElementById('compareNum').addEventListener('click', ()=> {
+            let myNum = document.getElementById('myNum').value;
+            count++;
+            let str = '';
+            // 1~99 아니어도 입력가능
+
+            if (myNum > 1 && myNum < 100){
+                if(comNum == myNum) {
+                    str = `시도횟수 ${count}, 정답입니다. ${comNum} 이었습니다`
+                }
+                else if (comNum > myNum) {
+                    str = `시도횟수 ${count}, UP \n`
+                }
+                else {
+                    str = `시도횟수 ${count}, DOWN \n`
+                }
+            }
+            else {
+                str='1~99 사이의 숫자만 가능합니다.';
+            }
+            document.getElementById('result').innerText = str;
+        })
+
+
+        document.getElementById('new').addEventListener('click',()=> {
+            window.location.reload();
+        })
+
+        document.getElementById('random').addEventListener('click', ()=> {
+            comNum = Math.floor(Math.random()*99)+1;
+            document.getElementById('printMsg').innerText =
+            '컴퓨터가 랜덤수(1~99)를 생성했습니다.'
+            console.log(comNum)
+        })
+    </script>
+</body>
+</html>

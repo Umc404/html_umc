@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>오늘은</h1>
+    <button type="button" id="btn">Today</button>
+    <h3 id="result">
+        <!--
+            오늘날짜와 요일 출력
+            2024. 8. 7 . (수)
+         -->
+    </h3>
+    <script>
+        document.getElementById('btn').addEventListener('click',()=> {
+            let today = new Date();
+            let today_ymd = today.toLocaleDateString();
+            let date = "";
+            switch(today.getDay()){
+                case 0:
+                    date = "일";
+                    break;
+                case 1:
+                    date = "월";
+                    break;
+                case 2:
+                    date = "화";
+                    break;
+                case 3:
+                    date = "수";
+                    break;
+                case 4:
+                    date = "목";
+                    break;
+                case 5:
+                    date = "금";
+                    break;
+                case 6:
+                    date = "토";
+                    break;
+                default:
+                    date = "";
+            }
+            console.log(today_ymd);
+            console.log(date);
+
+            let str = `${today_ymd} (${date})`;
+            result.innerText = str;
+        })
+
+    </script>
+</body>
+</html>

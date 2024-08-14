@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 구구단 문제 -->
+     <h1>
+        <button type="button" id="startBtn">문제 출제</button>
+     </h1>
+     <ol id="q"></ol>
+     <h1>
+        <button type="button" id="compareBtn">정답 확인</button>
+     </h1>
+     <h3 id="printRatio"></h3>
+
+     <script>
+        //input.style.backgroundColor = 'green / red'
+        // style 객체의 속성으로 줄 때 camelCase로 변경하여 속성을 줌.
+        const ranResult = [];
+        const myArr = [];
+        
+        document.getElementById('startBtn').addEventListener('click', ()=> {
+            ranResult.length = 0;
+            let i=0;
+            
+            let str = '';
+            // console.log(num1)
+            // console.log(num2)
+            // ranResult.push
+            while(ranResult.length<10){
+                i++;
+                let num1 = Number(Math.floor(Math.random()*9+1)); 
+                let num2 = Number(Math.floor(Math.random()*9+1));
+                ranResult[ranResult.length] = num1*num2;
+                str += `<li>${num1} * ${num2} = <input type="text" id="myResult${i}"></li>`
+            }
+            console.log(ranResult)
+            q.innerHTML = str;
+        })
+
+        document.getElementById('compareBtn').addEventListener('click', ()=>{
+            let i = 0;
+            while(myArr.length < 10){
+                i++;                
+                let myRes = Number(document.getElementById(`myResult${i}`).value);
+                myArr[myArr.length] = myRes;
+            }
+            console.log(myArr)
+            console.log(ranResult)
+            
+        })
+     </script>
+</body>
+</html>
