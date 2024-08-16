@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    ID : <input type="text" id="id"><br>
+    PW : <input type="password" id="pw"><br>
+    <h3 id="idOut"></h3>
+    <h3 id="pwOut"></h3>
+    <button id="submit">로그인</button>
+
+    <script>
+        // id 규칙 8자 이상
+        // pw 규칙 숫자, 문자, 특수문자가 포함된 8자 이상
+        // ^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*].{8,}$
+        
+
+        
+        let pwArr = [];
+        // document.getElementById('pw').addEventListener('keypress', (e)=>{
+        //     if(e.code == 'Backspace'){
+        //         pwArr.pop(pwArr.length);
+        //         console.log(pwArr)
+        //     }
+        //     pwArr.push(e.key);
+        //     console.log(pwArr);
+        // })
+        
+        let id = document.getElementById('id').value;
+        let pw = document.getElementById('pw').value;
+        
+        let regPw = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*].{8,}$/i;
+        
+        document.getElementById('id').addEventListener('keyup',()=>{
+            id = document.getElementById('id').value;
+            if (id.length >= 8){
+                console.log(`${id}, ${id.length}, ${id.length>=8}`)
+            }
+            else {
+                console.log(`${id}, ${id.length}, ${id.length>=8}`)
+            }
+        })
+        document.getElementById('pw').addEventListener('keyup',()=>{
+            pw = document.getElementById('pw').value;
+            console.log(pw, regPw.test(pw));
+        })
+
+        document.getElementById('submit').addEventListener('click', ()=>{
+            id = document.getElementById('id').value;
+            pw = document.getElementById('pw').value;
+            
+            if(id.length < 8){
+                alert('아이디 8자 이상 입력하세요.');
+            }
+            else {
+                if(regPw.test(pw)) {
+                    console.log(id)
+                    console.log(pw)
+                }
+                else {
+                    alert('유효하지 않은 비밀번호입니다.');
+                }
+            }
+        })
+    </script>
+</body>
+</html>

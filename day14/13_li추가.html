@@ -30,7 +30,7 @@
         })
         
         let index = 0;
-        document.getElementById('btn2').addEventListener('click', ()=>{
+        document.getElementById('btn2').addEventListener('click', ()=>{ //ol
             if (index < datas.length){
                 let str = `<li>${datas[index]}</li>`;
                 document.getElementById('ol').innerHTML += str;
@@ -48,7 +48,7 @@
             })
         })
         let i = 0;
-        document.getElementById('btn4').addEventListener('click',()=>{
+        document.getElementById('btn4').addEventListener('click',()=>{ // ol2
             if(i<datas.length){
                 let li = document.createElement('li');
                 li.innerText = datas[i];
